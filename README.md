@@ -68,6 +68,10 @@ A scalable, fault-tolerant microservices pipeline for detecting hate speech, tra
 
 ---
 
+## Issues:
+---
+- Hey Devs, this is purely a prototype code, cloning or copying it didn't run actually untill I fix some manual fixtures and methods. If you need that please contact me ! Keys are still with me 🗝️✌️
+---
 ## ⚙️ Setup
 
 ### ✅ Prerequisites
