@@ -1,0 +1,23 @@
+hate_speech:
+  fasttext_model_path: "/app/models/lid.176.bin"
+  models:
+    muril: "google/muril-base-cased"
+    indicbert: "ai4bharat/indic-bert"
+    xlmr: "xlm-roberta-base"
+    distilbert: "distilbert-base-multilingual-cased"
+    mbert: "bert-base-multilingual-cased"
+  threshold: 0.7
+translation:
+  model: "m2m_100_418M"
+tagging:
+  max_keywords: 5
+  buzzwords:
+    - generic
+    - dummy
+    - general
+    - common
+  model: "intfloat/e5-large-v2"
+logging:
+  storage: "local"
+  log_file: "/app/logs/pipeline_log.jsonl"
+  flagged_log_file: "/app/logs/flagged_hate_speech.jsonl"
