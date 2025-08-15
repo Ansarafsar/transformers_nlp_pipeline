@@ -80,12 +80,11 @@ A scalable, fault-tolerant microservices pipeline for detecting hate speech, tra
 ---
 
 ### 🧩 Clone Repo
----
+
 ```bash
 git clone https://github.com/<your-username>/multilingual-hate-speech-pipeline.git
 cd multilingual-hate-speech-pipeline
 ```
----
 ## 🛠️ Environment Setup
 
 ### 🔑 Set Environment Variables
@@ -93,5 +92,29 @@ cd multilingual-hate-speech-pipeline
 ```bash
 echo "HF_TOKEN=<your-huggingface-token>" > .env
 ```
+### 🐳 Build & Run the Services
+```bash
+export DOCKER_BUILDKIT=1
+docker-compose build
+docker-compose up -d
+```
+- Make sure Docker, Docker Compose, and NVIDIA Container Toolkit are installed and configured.
 
-
+### 🔬 Test the API Locally
+```bash
+curl -X POST http://localhost/process \
+  -H "Content-Type: application/json" \
+  -d '{"text": "Ami kal party te jabo"}'
+```
+### ✅ Expected Response:
+```bash
+{
+  "flagged": false,
+  "reason": "No hate speech detected",
+  "tags": ["party", "plan"]
+}
+```
+### Postman API Testing
+```
+Postman: POST http://<EC2-IP>/process with {"text": "You idiot"} → {"flagged": true, "reason": "Hate speech detected"}.
+```
