@@ -86,3 +86,12 @@ git clone https://github.com/<your-username>/multilingual-hate-speech-pipeline.g
 cd multilingual-hate-speech-pipeline
 ```
 ---
+## 🛠️ Environment Setup
+
+### 🔑 Set Environment Variables
+
+```bash
+echo "HF_TOKEN=<your-huggingface-token>" > .env
+```
+
+
