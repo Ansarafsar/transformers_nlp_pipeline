@@ -1,0 +1,114 @@
+version: '3.8'
+services:
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - api_gateway
+    networks:
+      - ml_network
+  api_gateway:
+    build:
+      context: ./api_gateway
+      dockerfile: Dockerfile
+    volumes:
+      - ./config.yaml:/app/config.yaml
+    depends_on:
+      - translation_service
+      - hate_speech_service
+      - tagging_service
+      - logging_service
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+    networks:
+      - ml_network
+  translation_service:
+    build:
+      context: ./translation_service
+      dockerfile: Dockerfile
+    volumes:
+      - ./config.yaml:/app/config.yaml
+    environment:
+      - HF_TOKEN=${HF_TOKEN}
+      - HF_HOME=/app/.cache/huggingface
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 4G
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    runtime: nvidia
+    networks:
+      - ml_network
+  hate_speech_service:
+    build:
+      context: ./hate_speech_service
+      dockerfile: Dockerfile
+    volumes:
+      - ./hate_speech_service/models:/app/models
+      - ./config.yaml:/app/config.yaml
+    environment:
+      - HF_TOKEN=${HF_TOKEN}
+      - HF_HOME=/app/.cache/huggingface
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 4G
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    runtime: nvidia
+    networks:
+      - ml_network
+  tagging_service:
+    build:
+      context: ./tagging_service
+      dockerfile: Dockerfile
+    volumes:
+      - ./config.yaml:/app/config.yaml
+    environment:
+      - HF_TOKEN=${HF_TOKEN}
+      - HF_HOME=/app/.cache/huggingface
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 4G
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    runtime: nvidia
+    networks:
+      - ml_network
+  logging_service:
+    build:
+      context: ./logging_service
+      dockerfile: Dockerfile
+    volumes:
+      - ./logging_service/logs:/app/logs
+      - ./config.yaml:/app/config.yaml
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 1G
+    networks:
+      - ml_network
+networks:
+  ml_network:
+    driver: bridge
