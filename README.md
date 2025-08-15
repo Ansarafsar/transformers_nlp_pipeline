@@ -1,4 +1,4 @@
-# 🧠 Multilingual Hate Speech Detection and Content Curation Pipeline
+# 🧠 NO GPT - Vendor Independent Multilingual/model Hate Speech Detection and Content Curation Pipeline
 
 A scalable, fault-tolerant microservices pipeline for detecting hate speech, translating non-English text, and generating tags for content curation on professional platforms.
 
